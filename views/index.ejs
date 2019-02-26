@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Main</h1>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="name" name="name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-2 control-label">Message</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" rows="3" id="message" name="message"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" class="btn btn-default" id="btn">Sign in</button>
+                </div>
+            </div>
+        </form>
+        <div class="text-center">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="list-group"></div>
+    </div>    
+    <script>
+        $.get('/count',(result)=>{
+            console.log(result)
+        })
+        $('#btn').click(()=>{
+            let Name = $('#name').val()
+            let Message = $('#message').val()
+            let Time = new Date()
+            $.post('/send',{
+                'name' : $('#name').val(),
+                'message' : $('#message').val()
+            },(result)=>{
+                if(result == '成功'){
+                    createElements(Name,Message,Time)
+                    return
+                }
+            })
+        })
+        function createElements(Name,Message,Time){
+            let template = `<a href="#" class="list-group-item">`
+                template += `<h4 class="list-group-item-heading">Name:  ${Name}</h4>`
+                template += `<p class="list-group-item-text">Message:  ${Message}</p>`
+                template += `<p class="list-group-item-text text-right">Time:  ${Time}</p>`
+                template += `<a>`
+            $('.list-group').append(template)
+        }
+    </script>
+</body>
+</html>
