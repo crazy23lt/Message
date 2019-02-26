@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://127.0.0.1:27017';
 const dbName = 'test';
 
 function _connectDB(callback) {
@@ -72,17 +72,18 @@ exports.remove = (collectionName, json, callback) => {
         });
     })
 }
+
 exports.count = (collectionName, json, callback) => {
     _connectDB((db, client) => {
         // Get the documents collection
         const collection = db.collection(collectionName);
         // Find some documents
-        collection.find(json).count().toArray((err, docs) => {
+        collection.find(json).count((err,result)=>{
             assert.equal(err, null);
             console.log("Found the following records");
             // console.log(docs)
-            callback(err, docs);
+            callback(err, result);
             client.close()
-        });
+        })
     })
 }

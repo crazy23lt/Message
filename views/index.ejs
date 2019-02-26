@@ -34,16 +34,11 @@
         <div class="text-center">
             <nav aria-label="Page navigation">
                 <ul class="pagination">
-                    <li>
+                    <li class='createPage'>
                         <a href="#" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
                     <li>
                         <a href="#" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
@@ -54,9 +49,13 @@
         </div>
         <div class="list-group"></div>
     </div>    
-    <script>
+    <script>   
+        $.get('/find',(result)=>{
+            let MessageData = JSON.parse(result)
+            console.log(MessageData)
+        })
         $.get('/count',(result)=>{
-            console.log(result)
+            createPage(result)
         })
         $('#btn').click(()=>{
             let Name = $('#name').val()
@@ -72,6 +71,20 @@
                 }
             })
         })
+        function createPage(count){
+            let index
+            if(count%2 == 1){
+                index = (count + 1)/2
+            }else{
+                index = count/2
+            }
+            let template = `<li class="active"><a href="#">1</a></li>`
+            for(let i = 2;i < index; i++){
+                template += `<li><a href="#">${i}</a></li>`
+            }        
+                template += `<a>`       
+            $('.createPage').after(template)                 
+        }
         function createElements(Name,Message,Time){
             let template = `<a href="#" class="list-group-item">`
                 template += `<h4 class="list-group-item-heading">Name:  ${Name}</h4>`
@@ -80,6 +93,8 @@
                 template += `<a>`
             $('.list-group').append(template)
         }
+        
     </script>
+    
 </body>
 </html>

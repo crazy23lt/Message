@@ -8,7 +8,7 @@ app.get('/',(req,res,next)=>{
     res.render('index')
 })
 app.post('/send',(req,res,next)=>{
-    var form = new formidable.IncomingForm();
+    var form = new formidable.IncomingForm()
     form.parse(req, function (err, fields, files) {
         db.insert('Message', [
             { 'name': fields.name, 'message': fields.message ,'time': new Date()}
@@ -20,7 +20,7 @@ app.post('/send',(req,res,next)=>{
                 res.json('成功')
             }
         })
-    });
+    })
 })
 app.get('/find',(req,res)=>{
     let page = req.query.page
@@ -29,8 +29,8 @@ app.get('/find',(req,res)=>{
     })
 })
 app.get('/count',(req,res)=>{
-    db.count('Message',{},(err,result)=>{
-        res.send(result)
+    db.count('Message', {}, (err, result) => {
+        res.json(result)
     })
 })
 app.listen(3000)
