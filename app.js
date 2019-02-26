@@ -24,7 +24,7 @@ app.post('/send',(req,res,next)=>{
 })
 app.get('/find',(req,res)=>{
     let page = req.query.page
-    db.find('Message',{},(err,result)=>{
+    db.find('Message',{},page,(err,result)=>{
         res.json(JSON.stringify(result))
     })
 })

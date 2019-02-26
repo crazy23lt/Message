@@ -6,7 +6,7 @@ const dbName = 'test';
 function _connectDB(callback) {
     MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
         assert.equal(null, err);
-        console.log("Connected successfully to server");
+        // console.log("Connected successfully to server");
 
         const db = client.db(dbName);
         callback(db, client)
@@ -22,21 +22,23 @@ exports.insert = (collectionName, json, callback) => {
             assert.equal(err, null);
             // assert.equal(1, result.result.n);
             // assert.equal(1, result.ops.length);
-            console.log("Inserted 1 documents into the collection");
+            // console.log("Inserted 1 documents into the collection");
             callback(err, result);
             client.close()
         });
     })
 }
 
-exports.find = (collectionName, json, callback) => {
-    _connectDB((db, client) => {
+exports.find = (collectionName, json,page, callback) => {
+    _connectDB((db, client) => {  
+        let sk = parseInt(page)*3
+        console.log(sk)
         // Get the documents collection
         const collection = db.collection(collectionName);
         // Find some documents
-        collection.find(json).skip(0).limit(2).sort({_id:-1}).toArray((err, docs) => {
+        collection.find(json).skip(sk).limit(3).toArray((err, docs) => {
             assert.equal(err, null);
-            console.log("Found the following records");
+            // console.log("Found the following records");
             // console.log(docs)
             callback(err, docs);
             client.close()
@@ -52,7 +54,7 @@ exports.updata = (collectionName, arg1, arg2, callback) => {
             (err, result) => {
                 assert.equal(err, null);
                 assert.equal(1, result.result.n);
-                console.log("Updated the document with the field a equal to 2");
+                // console.log("Updated the document with the field a equal to 2");
                 callback(err, result);
                 client.close()
             });
@@ -66,7 +68,7 @@ exports.remove = (collectionName, json, callback) => {
         collection.deleteOne(json, (err, result) => {
             assert.equal(err, null);
             assert.equal(1, result.result.n);
-            console.log("Removed the document with the field a equal to 3");
+            // console.log("Removed the document with the field a equal to 3");
             callback(err, result);
             client.close()
         });
@@ -80,7 +82,7 @@ exports.count = (collectionName, json, callback) => {
         // Find some documents
         collection.find(json).count((err,result)=>{
             assert.equal(err, null);
-            console.log("Found the following records");
+            // console.log("Found the following records");
             // console.log(docs)
             callback(err, result);
             client.close()
